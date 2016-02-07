@@ -34,6 +34,10 @@ type
     AsaStoredProcSetPend: TAsaStoredProc;
     AsaStoredProcChangeClientNum: TAsaStoredProc;
     AsaStoredProcLastExport: TAsaStoredProc;
+    AdsTableFarmWest: TAdsTable;
+    AdsQueryFWOrder: TAdsQuery;
+    AdsConnectionFarmWest: TAdsConnection;
+    OpenDialogFarmWest: TOpenDialog;
     procedure ImportExportDataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -44,6 +48,7 @@ type
      procedure ExecuteImport;
      procedure NPayment(Sender:TObject);
      procedure Pend(Capt:string);
+     procedure ImportFarmWestOrder(Capt:string);
   end;
 
 var
@@ -63,12 +68,27 @@ end;
 procedure TImportExportModule.ImportExportDataModuleCreate(
   Sender: TObject);
 var  j:integer;
-     TempItem2:TMenuItem;
+     TempItem1, TempItem2:TMenuItem;
 
 begin
   AdsConnectionImport.ConnectPath:=ExtractFileDir(Application.ExeName)+'\Import';
   AdsConnectionExport.ConnectPath:=ExtractFileDir(Application.ExeName)+'\Export';
   AdsConnectionFactory.ConnectPath:=ExtractFileDir(Application.ExeName)+'\Factory';
+  AdsConnectionFarmWest.ConnectPath:=ExtractFileDir(Application.ExeName)+'\FarmWest';
+  OpenDialogFarmWest.InitialDir:=ExtractFileDir(Application.ExeName)+'\FarmWest';
+
+  FilesScanner.FileMask:='*.sql';
+  FilesScanner.ScanDir:=AdsConnectionFarmWest.ConnectPath;
+  FilesScanner.Scan;
+
+  for j := 0 to FilesScanner.FilesCount-1 do    // Iterate
+   begin
+    TempItem1:=TMenuItem.Create(MainForm);
+    TempItem1.Caption:=Copy(TFileObject(FilesScanner.Files.Items[j]).FileName,1, Length(TFileObject(FilesScanner.Files.Items[j]).FileName)-4);
+    TempItem1.OnClick:=MainForm.NInOutFileClick;
+    MainForm.NInOutFile.Add(TempItem1);
+   end;
+
 
   FilesScanner.FileMask:='д*.sql';
   FilesScanner.ScanDir:=AdsConnectionFactory.ConnectPath;
@@ -288,6 +308,87 @@ begin
   ShowMessage('Импорт нормально завершился');
 end;
 
+procedure TImportExportModule.ImportFarmWestOrder(Capt:string);
+var InOutNum:integer;
+begin
+  Delete(Capt,Pos('&',Capt),1);
+
+  if not OpenDialogFarmWest.Execute then
+    Exit;
+
+  if FileExists(AdsConnectionFarmWest.ConnectPath+'\Archive\'+ExtractFileName(OpenDialogFarmWest.FileName)) then
+    begin
+      ShowMessage('Такой файл уже был');
+      Exit;
+    end;
+
+  AdsConnectionFarmWest.IsConnected:=True;
+  with DataModuleHM do
+  begin
+  AsaSessionHM.StartTransaction;
+  try
+    FileUtil.CopyFile(OpenDialogFarmWest.FileName,AdsConnectionFarmWest.ConnectPath+'\TempDBF.dbf', nil);
+    AdsQueryFWOrder.SQL.LoadFromFile(AdsConnectionFarmWest.ConnectPath+'\'+Capt+'.sql');
+    AdsQueryFWOrder.Open;
+  except
+    on e: Exception do
+     begin
+      ShowMessage('Ошибка открытия файла '+ e.Message);
+      Exit;
+     end
+  end;    // try/except
+
+  AsaStoredProcRefrInOut_s.ParamByName('@LocCode').Value:=LocCode;
+  AsaStoredProcRefrInOut_s.ParamByName('@Operator').Value:=Operator;
+  AsaStoredProcRefrInOut_s.ParamByName('@ShipCode').Value:=1;
+  AsaStoredProcRefrInOut_s.ParamByName('@Comment').Value:=ExtractFileName(OpenDialogFarmWest.FileName);
+  AsaStoredProcRefrInOut_s.ExecProc;
+  InOutNum:=AsaStoredProcRefrInOut_s.ParamByName('@InOutNum').Value;
+
+  try
+   while not AdsQueryFWOrder.EOF do
+   begin
+     AsaStoredProcEP.ParamByName('@ProdCode').Value:=AdsQueryFWOrder.FieldByName('ProdCode').Value;
+     AsaStoredProcEP.ExecProc;
+     if AsaStoredProcEP.ParamByName('@p').Value=0 then
+     begin
+       AsaStoredProcRefrProduct.ParamByName('@ProdCode').Value:=AdsQueryFWOrder.FieldByName('ProdCode').Value;
+       AsaStoredProcRefrProduct.ParamByName('@ProdName').Value:=AdsQueryFWOrder.FieldByName('ProdName').Value;
+       AsaStoredProcRefrProduct.ParamByName('@Box').Value:=AdsQueryFWOrder.FieldByName('Box').Value;
+       AsaStoredProcRefrProduct.ParamByName('@Producer').Value:=AdsQueryFWOrder.FieldByName('Producer').Value;
+       AsaStoredProcRefrProduct.ExecProc;
+     end;
+     if (AdsQueryFWOrder.FieldByName('ProdCode').Value<>'')and(AdsQueryFWOrder.FieldByName('Quantity').Value<>0) then
+     begin
+       AsaStoredProcRefrInOut_d.ParamByName('@InOutNum').Value:=InOutNum;
+       AsaStoredProcRefrInOut_d.ParamByName('@ProdCode').Value:=AdsQueryFWOrder.FieldByName('ProdCode').Value;
+       AsaStoredProcRefrInOut_d.ParamByName('@Quantity').Value:=AdsQueryFWOrder.FieldByName('Quantity').Value;
+       AsaStoredProcRefrInOut_d.ParamByName('@Cost').Value:=AdsQueryFWOrder.FieldByName('Cost').Value;
+       AsaStoredProcRefrInOut_d.ExecProc;
+     end;
+
+     AdsQueryFWOrder.Next;
+     Application.ProcessMessages;
+   end;    // while
+  except
+    on e: Exception do
+     begin
+       AsaSessionHM.Rollback;
+       AdsQueryFWOrder.Close;
+       AdsConnectionFarmWest.IsConnected:=False;
+       ShowMessage('Ошибка импорта '+e.Message);
+       Exit;
+     end;
+  end;    // try
+  AsaSessionHM.Commit;
+  AdsQueryFWOrder.Close;
+  AdsConnectionFarmWest.IsConnected:=False;
+  ShowMessage('Импорт закончен');
+  DeleteFile(AdsConnectionFarmWest.ConnectPath+'\TempDBF.dbf');
+  FileUtil.MoveFile(OpenDialogFarmWest.FileName,AdsConnectionFarmWest.ConnectPath+'\Archive\'+ExtractFileName(OpenDialogFarmWest.FileName));
+  SetCurrentDir(ExtractFileDir(Application.ExeName));
+ end;    // with
+end;
 
 procedure TImportExportModule.Pend(Capt:string);
 begin

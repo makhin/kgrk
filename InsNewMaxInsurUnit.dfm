@@ -2,7 +2,7 @@ object MaxInsurForm: TMaxInsurForm
   Left = 338
   Top = 220
   Width = 401
-  Height = 274
+  Height = 185
   BorderIcons = [biSystemMenu]
   Caption = 'Договор страхования'
   Color = clBtnFace
@@ -24,70 +24,28 @@ object MaxInsurForm: TMaxInsurForm
     Height = 13
     Caption = 'Название'
   end
-  object Label2: TLabel
-    Left = 8
-    Top = 48
-    Width = 34
-    Height = 13
-    Caption = 'Сумма'
-  end
   object Label3: TLabel
     Left = 8
-    Top = 144
+    Top = 48
     Width = 61
     Height = 13
     Caption = '№ договора'
   end
   object Label4: TLabel
     Left = 8
-    Top = 176
+    Top = 80
     Width = 69
     Height = 13
     Caption = 'Вид договора'
   end
-  object Label5: TLabel
-    Left = 232
-    Top = 48
-    Width = 39
-    Height = 13
-    Caption = 'Взносы'
-  end
-  object Label6: TLabel
-    Left = 8
-    Top = 80
-    Width = 41
-    Height = 13
-    Caption = 'Лимиты'
-  end
-  object Label7: TLabel
-    Left = 8
-    Top = 112
-    Width = 35
-    Height = 13
-    Caption = 'Общий'
-  end
-  object Label8: TLabel
-    Left = 160
-    Top = 110
-    Width = 24
-    Height = 13
-    Caption = 'Мед.'
-  end
-  object Label9: TLabel
-    Left = 272
-    Top = 110
-    Width = 29
-    Height = 13
-    Caption = 'Обсл.'
-  end
   object BitBtnSave: TBitBtn
     Left = 96
-    Top = 208
+    Top = 112
     Width = 75
     Height = 25
     Caption = 'Сохр.'
     Default = True
-    TabOrder = 11
+    TabOrder = 4
     OnClick = BitBtnSaveClick
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
@@ -110,12 +68,12 @@ object MaxInsurForm: TMaxInsurForm
   end
   object BitBtnCancel: TBitBtn
     Left = 248
-    Top = 208
+    Top = 112
     Width = 75
     Height = 25
     Cancel = True
     Caption = 'Отмена'
-    TabOrder = 12
+    TabOrder = 5
     OnClick = BitBtnCancelClick
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
@@ -143,91 +101,28 @@ object MaxInsurForm: TMaxInsurForm
     Height = 21
     TabOrder = 0
   end
-  object CurrencyEditMaxInsurMoney: TCurrencyEdit
-    Left = 80
-    Top = 40
-    Width = 97
-    Height = 21
-    AutoSize = False
-    DisplayFormat = ',0.00;-,0.00'
-    TabOrder = 1
-  end
   object EditComment: TEdit
     Left = 80
-    Top = 136
+    Top = 40
     Width = 297
     Height = 21
-    TabOrder = 8
+    TabOrder = 1
   end
   object ComboBoxLic: TComboBox
     Left = 80
-    Top = 168
+    Top = 72
     Width = 201
     Height = 21
     ItemHeight = 13
-    TabOrder = 9
+    TabOrder = 2
   end
   object ButtonAdd: TButton
     Left = 304
-    Top = 172
+    Top = 76
     Width = 75
     Height = 17
     Caption = 'Добавить'
-    TabOrder = 10
-    OnClick = ButtonAddClick
-  end
-  object CurrencyEditMaxInsurPayment: TCurrencyEdit
-    Left = 280
-    Top = 40
-    Width = 97
-    Height = 21
-    AutoSize = False
-    DisplayFormat = ',0.00;-,0.00'
-    TabOrder = 2
-  end
-  object ComboBoxTreat: TComboBox
-    Left = 80
-    Top = 72
-    Width = 185
-    Height = 21
-    ItemHeight = 13
     TabOrder = 3
-    OnChange = ComboBoxTreatChange
-  end
-  object ButtonSaveLimit: TButton
-    Left = 302
-    Top = 72
-    Width = 75
-    Height = 17
-    Caption = 'Сохранить'
-    TabOrder = 4
-    OnClick = ButtonSaveLimitClick
-  end
-  object CurrencyEditLimit: TCurrencyEdit
-    Left = 80
-    Top = 104
-    Width = 73
-    Height = 21
-    AutoSize = False
-    DisplayFormat = ',0.00;-,0.00'
-    TabOrder = 5
-  end
-  object CurrencyEditMedLim: TCurrencyEdit
-    Left = 192
-    Top = 104
-    Width = 73
-    Height = 21
-    AutoSize = False
-    DisplayFormat = ',0.00;-,0.00'
-    TabOrder = 6
-  end
-  object CurrencyEditServLim: TCurrencyEdit
-    Left = 304
-    Top = 103
-    Width = 73
-    Height = 21
-    AutoSize = False
-    DisplayFormat = ',0.00;-,0.00'
-    TabOrder = 7
+    OnClick = ButtonAddClick
   end
 end

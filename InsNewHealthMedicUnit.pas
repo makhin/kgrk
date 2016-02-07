@@ -65,6 +65,7 @@ type
     ClientID:integer;
     InsurNum:Integer;
     FactoryNum:Integer;
+    TypeInsurCase:Integer;
     procedure CMDialogKey(var Message: TCMDialogKey); message CM_DIALOGKEY;
     procedure FillComboHospital;
     procedure FillComboTreat;
@@ -96,6 +97,7 @@ end;
 
 procedure TInsNewHealthMedicForm.FormActivate(Sender: TObject);
 begin
+ FillComboTreat;
  with DataModuleHM.AsaStoredProcShowInsurCase do
  begin
    Close;
@@ -190,7 +192,7 @@ begin
      ParamByName('@Comment').AsString:=MemoComment.Text;
      ParamByName('@TotalSum').AsCurrency:=CurrencyEditSum.Value-CurrencyEditRest.Value;
 
-     ParamByName('@TypeInsurCase').AsInteger:=2;
+     ParamByName('@TypeInsurCase').AsInteger:=TypeInsurCase;
 
      ExecProc;
      InsurCaseNum:=ParamByName('@InsurCaseNum').AsInteger;
@@ -255,7 +257,7 @@ procedure TInsNewHealthMedicForm.FillComboTreat;
 begin
  with DataModuleHM.AsaStoredProcListTreatment do
  begin
-   ParamByName('@MaxInsurNum').Value:=InsurNum;
+   ParamByName('@TypeInsurCase').Value:=TypeInsurCase;
    Open;
    ComboBoxTreat.Items.Clear;
    while not Eof do
@@ -271,7 +273,6 @@ end;
 
 procedure TInsNewHealthMedicForm.FormCreate(Sender: TObject);
 begin
-   FillComboTreat;
    FillComboHospital;
    FillComboIll;
 end;

@@ -30,7 +30,6 @@ type
     Label5: TLabel;
     ComboBoxBranch: TComboBox;
     ButtonEditBranch: TButton;
-    Label6: TLabel;
     RadioGroupIsTariff: TRadioGroup;
     CurrencyEditTariff: TCurrencyEdit;
     CurrencyEditSum: TCurrencyEdit;
@@ -38,14 +37,12 @@ type
     CheckBoxIndust: TCheckBox;
     Label8: TLabel;
     CurrencyEditMedical: TCurrencyEdit;
-    CurrencyEditFood: TCurrencyEdit;
+    CurrencyEditAddAktSum: TCurrencyEdit;
     CheckBoxAddAkt: TCheckBox;
     Label10: TLabel;
     DateEditProtocol: TDateEdit;
     Label11: TLabel;
     EditAkt: TEdit;
-    Label13: TLabel;
-    CurrencyEditRest: TCurrencyEdit;
     Label9: TLabel;
     Label14: TLabel;
     DateEditAktDate: TDateEdit;
@@ -60,15 +57,18 @@ type
     Label17: TLabel;
     CurrencyEditTotal: TCurrencyEdit;
     DateEditBegin: TDateEdit;
-    EditLimit: TEdit;
     Label18: TLabel;
     DateEditDoc: TDateEdit;
-    PanelLim: TPanel;
-    EditLimitServ: TEdit;
-    EditLimitMed: TEdit;
+    GroupBoxProg: TGroupBox;
+    Label6: TLabel;
+    Label13: TLabel;
+    CurrencyEditProgRest: TCurrencyEdit;
+    CurrencyEditProgLimit: TCurrencyEdit;
+    GroupBoxInsurCase: TGroupBox;
     Label19: TLabel;
     Label20: TLabel;
-    Label21: TLabel;
+    CurrencyEditCaseRest: TCurrencyEdit;
+    CurrencyEditCaseLimit: TCurrencyEdit;
     procedure FormActivate(Sender: TObject);
     procedure BitBtnCancelClick(Sender: TObject);
     procedure BitBtnSaveClick(Sender: TObject);
@@ -100,7 +100,8 @@ type
     ClientID:integer;
     InsurNum:Integer;
     FactoryNum:Integer;
-    BedDay, Limit, LimitMed, LimitServ  :Currency;
+    BedDay, GlobalLimit, LocalLimit :Currency;
+    TypeInsurCase:Integer;
     procedure CMDialogKey(var Message: TCMDialogKey); message CM_DIALOGKEY;
     procedure FillComboHospital;
     procedure FillComboBranch(hn:integer);
@@ -142,7 +143,7 @@ begin
    Open;
    CurrencyEditMedical.Value:=DataModuleHM.AsaStoredProcShowInsurCaseMedSum.Value;
    CheckBoxAddAkt.Checked:=DataModuleHM.AsaStoredProcShowInsurCaseAddAkt.Value;
-   CurrencyEditFood.Value:=DataModuleHM.AsaStoredProcShowInsurCaseAddMedSum.Value;
+   CurrencyEditAddAktSum.Value:=DataModuleHM.AsaStoredProcShowInsurCaseAddMedSum.Value;
    DateEditProtocol.Date:=DataModuleHM.AsaStoredProcShowInsurCaseReportDate.Value;
    CheckBoxIndust.Checked:=DataModuleHM.AsaStoredProcShowInsurCaseIsIndust.Value;
    EditAkt.Text:=DataModuleHM.AsaStoredProcShowInsurCaseAkt.Value;
@@ -168,9 +169,6 @@ begin
       ButtonAdd.Enabled:=False;
       ButtonDel.Enabled:=False;
       DateEditBegin.Date:=Now();
-      Limit:=0;
-      LimitMed := 0;
-      LimitServ := 0;
     end
    else
     begin
@@ -183,9 +181,9 @@ begin
       BitBtnPrint.Enabled:=True;
       ButtonAdd.Enabled:=True;
       ButtonDel.Enabled:=True;
-      GetLimit;
     end;
 
+   GetLimit;
    BedDay:=DataModuleHM.AsaStoredProcShowInsurCaseMedBedDay.Value;
 
    if BedDay=0 then
@@ -202,8 +200,6 @@ begin
      end;
 
    CurrencyEditDiag.Value:=DataModuleHM.AsaStoredProcShowInsurCaseDiagSum.Value;
-//   CurrencyEditTotal.Value:=DataModuleHM.AsaStoredProcShowInsurCaseTotalSum.Value;
-//   CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
 
    Close;
   end;    // with
@@ -295,8 +291,8 @@ begin
        ParamByName('@AktDate').Clear;
 
      ParamByName('@AddAkt').AsBoolean:=CheckBoxAddAkt.Checked;
-     ParamByName('@AddMedSum').AsCurrency:=CurrencyEditFood.Value;
-     ParamByName('@TypeInsurCase').AsInteger:=0;
+     ParamByName('@AddMedSum').AsCurrency:=CurrencyEditAddAktSum.Value;
+     ParamByName('@TypeInsurCase').AsInteger:=TypeInsurCase;
      ParamByName('@PayPercent').AsInteger:=Round(CurrencyEditPayPercent.Value);
      ParamByName('@TotalSum').AsCurrency:=CurrencyEditTotal.Value; // Общая сумма
 
@@ -381,7 +377,7 @@ procedure TInsNewMedForm.FillComboTreat;
 begin
  with DataModuleHM.AsaStoredProcListTreatment do
  begin
-   ParamByName('@MaxInsurNum').Value:=InsurNum;
+   ParamByName('@TypeInsurCase').Value:=TypeInsurCase;
    Open;
    ComboBoxTreat.Items.Clear;
    while not Eof do
@@ -514,23 +510,17 @@ begin
     except
     end;    // try/except
 
-    CurrencyEditTotal.Value:=CurrencyEditSum.Value+CurrencyEditDiag.Value+CurrencyEditMedical.Value+ CurrencyEditFood.Value +md;
-    if (Limit <> 0) or ((LimitServ=0) and (LimitMed = 0)) then
-    begin
-      DBGridEhMedic.Columns[6].Footer.Value := '';
-      CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
-    end
-    else
-    begin
-      DBGridEhMedic.Columns[6].Footer.Value := Format('%m',[(LimitMed - md)]);
-      CurrencyEditRest.Value:=LimitServ-CurrencyEditTotal.Value+md;
-    end;
+    CurrencyEditTotal.Value:=CurrencyEditSum.Value+CurrencyEditDiag.Value+CurrencyEditMedical.Value+md;
+
+    CurrencyEditProgRest.Value := CurrencyEditProgLimit.Value - CurrencyEditTotal.Value;
+    CurrencyEditCaseRest.Value := CurrencyEditCaseLimit.Value - CurrencyEditTotal.Value;
 end;
 
 procedure TInsNewMedForm.CurrencyEditLimitChange(Sender: TObject);
 begin
   GetLimit;
-  CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
+  CurrencyEditProgRest.Value:=GlobalLimit-CurrencyEditTotal.Value;
+  CurrencyEditCaseRest.Value:=LocalLimit-CurrencyEditTotal.Value;
 end;
 
 procedure TInsNewMedForm.ComboBoxBranchChange(Sender: TObject);
@@ -541,13 +531,11 @@ end;
 
 procedure TInsNewMedForm.CheckBoxAddAktClick(Sender: TObject);
 begin
-{
   CurrencyEditAddAktSum.Enabled:=CheckBoxAddAkt.Checked;
   if not CheckBoxAddAkt.Checked then
     CurrencyEditAddAktSum.Value:=0
   else
     CurrencyEditAddAktSum.SetFocus;
-}
 end;
 
 procedure TInsNewMedForm.GetBedDay;
@@ -571,16 +559,6 @@ procedure TInsNewMedForm.GetLimit;
 var tr:Integer;
 begin
   tr:=Integer(ComboBoxTreat.Items.Objects[ComboBoxTreat.ItemIndex]);
-  with DataModuleHM.AsaStoredProcGetLimit do
-  begin
-    ParamByName('@MaxInsurNum').AsInteger:=InsurNum;
-    ParamByName('@TreatNum').AsInteger:=tr;
-    Open;
-    Limit := DataModuleHM.AsaStoredProcGetLimitLimit.Value;
-    LimitMed := DataModuleHM.AsaStoredProcGetLimitMedLimit.Value;
-    LimitServ := DataModuleHM.AsaStoredProcGetLimitServLimit.Value;
-    Close;
-  end;    // with
   with DataModuleHM.AsaStoredProcGetSumTotalSum do
   begin
     ParamByName('@ClientID').AsInteger:=ClientID;
@@ -588,22 +566,25 @@ begin
     ParamByName('@TreatNum').AsInteger:=tr;
     ParamByName('@InsurCaseNum').AsInteger:=InsurCaseNum;
     Open;
-    Limit:=Limit-DataModuleHM.AsaStoredProcGetSumTotalSumTotalSum.Value;
-    LimitMed := LimitMed - DataModuleHM.AsaStoredProcGetSumTotalSumMedSum.Value;
-    LimitServ := LimitServ - DataModuleHM.AsaStoredProcGetSumTotalSumServSum.Value;
+    GroupBoxProg.Caption := DataModuleHM.AsaStoredProcGetSumTotalSumProgName.Value;
+    GlobalLimit:=DataModuleHM.AsaStoredProcGetSumTotalSumLimit.Value-DataModuleHM.AsaStoredProcGetSumTotalSumTotalSum.Value;
+    if (not DataModuleHM.AsaStoredProcGetSumTotalSumTreatLimit.IsNull) then
+        LocalLimit:=DataModuleHM.AsaStoredProcGetSumTotalSumTreatLimit.Value
+    else
+        LocalLimit:=0;
     Close;
   end;    // with
 
-  if (Limit<>0) or ((LimitMed = 0) and (LimitServ = 0)) then
+  CurrencyEditProgLimit.Value := GlobalLimit;
+
+  if (LocalLimit = 0) then
   begin
-        EditLimit.Text:=FloatToStr(Limit);
-        PanelLim.Visible := False;
+        GroupBoxInsurCase.Visible := False;
   end
   else
   begin
-        EditLimitMed.Text := FloatToStr(LimitMed);
-        EditLimitServ.Text := FloatToStr(LimitServ);
-        PanelLim.Visible := True;
+        GroupBoxInsurCase.Visible := True;
+        CurrencyEditCaseLimit.Value :=LocalLimit;
   end
 
 end;
@@ -622,7 +603,7 @@ end;
 procedure TInsNewMedForm.ComboBoxTreatChange(Sender: TObject);
 begin
   GetLimit;
-  CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
+//  CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
   GetBedDay;
   Recalc(Sender);
 end;

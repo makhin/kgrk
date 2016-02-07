@@ -1,9 +1,9 @@
 [Designer]
 Version=1
-Left=178
-Top=135
+Left=226
+Top=118
 Width=917
-Height=601
+Height=629
 Splitter=233
 SelectedTab=Components
 
@@ -20,7 +20,7 @@ PrintToFile=0
 PrintBorders=1
 PrintSelected=0
 PrintVisible=0
-ExpandedItems=DataModuleHM\AsaStoredProcRemainders,DataModuleHM\AsaStoredProcGetLimit,DataModuleHM\AsaStoredProcListClients
+ExpandedItems=DataModuleHM\AsaDatasetMedic,DataModuleHM\AsaStoredProcListClients
 
 [DataDiagrams]
 Version=1

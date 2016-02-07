@@ -41,6 +41,15 @@ type
     SpeedbarSection1: TSpeedbarSection;
     SpeedItemAcc: TSpeedItem;
     SpeedItemMaxInsur: TSpeedItem;
+    N1: TMenuItem;
+    NMed: TMenuItem;
+    NInOutManual: TMenuItem;
+    NInOutFile: TMenuItem;
+    N12: TMenuItem;
+    NListInOut: TMenuItem;
+    SpeedbarSection5: TSpeedbarSection;
+    SpeedItem1: TSpeedItem;
+    SpeedItem2: TSpeedItem;
     procedure NExitClick(Sender: TObject);
     procedure NListClientClick(Sender: TObject);
     procedure NClientManualClick(Sender: TObject);
@@ -54,6 +63,10 @@ type
     procedure SpeedItemMaxInsurClick(Sender: TObject);
     procedure NPaymentClick(Sender: TObject);
     procedure N11Click(Sender: TObject);
+    procedure NInOutManualClick(Sender: TObject);
+    procedure NMedClick(Sender: TObject);
+    procedure NInOutFileClick(Sender: TObject);
+    procedure NListInOutClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -66,7 +79,8 @@ var
 implementation
 
 uses ListClientUnit, ImpExUnit, ReportUnit, AboutUnit, InsNewClientUnit,
-  ExpManUnit, LibUnit, ListFinFactUnit, ListMaxInsurUnit, NewAutoPayUnit;
+  ExpManUnit, LibUnit, ListFinFactUnit, ListMaxInsurUnit, NewAutoPayUnit,
+  InsNewInOutUnit, MedicalUnit, ListInOutUnit;
 
 {$R *.DFM}
 
@@ -141,6 +155,26 @@ end;
 procedure TMainForm.N11Click(Sender: TObject);
 begin
   ListFinFactForm.ShowModal;
+end;
+
+procedure TMainForm.NInOutManualClick(Sender: TObject);
+begin
+  InsInOutForm.ShowModal;
+end;
+
+procedure TMainForm.NMedClick(Sender: TObject);
+begin
+  MedicalForm.ShowModal;
+end;
+
+procedure TMainForm.NInOutFileClick(Sender: TObject);
+begin
+  ImportExportModule.ImportFarmWestOrder((Sender as TMenuItem).Caption);
+end;
+
+procedure TMainForm.NListInOutClick(Sender: TObject);
+begin
+  InOutListForm.ShowModal;
 end;
 
 end.

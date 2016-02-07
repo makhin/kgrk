@@ -33,28 +33,15 @@ type
     DBGridEhClientBeginDate: TdxDBGridDateColumn;
     DBGridEhClientTermDate: TdxDBGridDateColumn;
     ButtonHealthM: TButton;
-    DBGridEhClientPayMedStac: TdxDBGridCurrencyColumn;
-    DBGridEhClientPayMedAmb: TdxDBGridCurrencyColumn;
-    DBGridEhClientMedCountAmb: TdxDBGridMaskColumn;
-    DBGridEhClientMedCountStac: TdxDBGridMaskColumn;
-    DBGridEhClientMedMedAmb: TdxDBGridCurrencyColumn;
-    DBGridEhClientMedMedStac: TdxDBGridCurrencyColumn;
-    dxDBGriRemainders: TdxDBGrid;
-    dxDBGriRemaindersTreatName: TdxDBGridMaskColumn;
-    dxDBGriRemaindersLimit: TdxDBGridCurrencyColumn;
-    dxDBGriRemainderstotal: TdxDBGridCurrencyColumn;
-    dxDBGriRemaindersMedLimit: TdxDBGridCurrencyColumn;
-    dxDBGriRemaindersmed: TdxDBGridCurrencyColumn;
-    dxDBGriRemaindersServLimit: TdxDBGridCurrencyColumn;
-    dxDBGriRemaindersserv: TdxDBGridCurrencyColumn;
-    DBGridEhClientMedStacDS0: TdxDBGridCurrencyColumn;
-    DBGridEhClientMedStacDS1: TdxDBGridCurrencyColumn;
-    DBGridEhClientMedMedEmerg: TdxDBGridCurrencyColumn;
-    DBGridEhClientMedCountEmerg: TdxDBGridMaskColumn;
-    DBGridEhClientPayMedEmerg: TdxDBGridCurrencyColumn;
-    DBGridEhClientHealthCount: TdxDBGridMaskColumn;
-    DBGridEhClientPayHealth: TdxDBGridCurrencyColumn;
-    DBGridEhClientColumnComment: TdxDBGridColumn;
+    ButtonMSCH: TButton;
+    DBGridEhClientColumnMSCHQnt: TdxDBGridColumn;
+    DBGridEhClientColumnMSCHSum: TdxDBGridCurrencyColumn;
+    DBGridEhClientColumnMedQnt: TdxDBGridColumn;
+    DBGridEhClientColumnMedMedSum: TdxDBGridCurrencyColumn;
+    DBGridEhClientColumnMedLPUSum: TdxDBGridCurrencyColumn;
+    DBGridEhClientColumnHealthQnt: TdxDBGridColumn;
+    DBGridEhClientColumnHealthSum: TdxDBGridCurrencyColumn;
+    DBGridEhClientColumnLimit: TdxDBGridCurrencyColumn;
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure ButtonFindClick(Sender: TObject);
@@ -66,10 +53,7 @@ type
     procedure ButtonFinClick(Sender: TObject);
     procedure EditFindClientEnter(Sender: TObject);
     procedure ButtonHealthMClick(Sender: TObject);
-    procedure DBGridEhClientCustomDraw(Sender: TObject; ACanvas: TCanvas;
-      ARect: TRect; ANode: TdxTreeListNode; AColumn: TdxDBTreeListColumn;
-      const AText: String; AFont: TFont; var AColor: TColor; ASelected,
-      AFocused: Boolean; var ADone: Boolean);
+    procedure ButtonMSCHClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -178,14 +162,14 @@ begin
   RefreshQuery(DataModuleHM.AsaStoredProcListClients);
 end;
 
-procedure TListClientForm.DBGridEhClientCustomDraw(Sender: TObject;
-  ACanvas: TCanvas; ARect: TRect; ANode: TdxTreeListNode;
-  AColumn: TdxDBTreeListColumn; const AText: String; AFont: TFont;
-  var AColor: TColor; ASelected, AFocused: Boolean; var ADone: Boolean);
+procedure TListClientForm.ButtonMSCHClick(Sender: TObject);
 begin
-//if AColumn.Index > 3 then
-        If (Trim(ANode.Values[DBGridEhClientColumnComment.Index]) <> '') and (ANode.Values[2] <> ANode.Values[1]) then
-                AFont.Color := clRed;
+  ListInsurForm.ClientID:=DataModuleHM.AsaStoredProcListClientsClientID.Value;
+  ListInsurForm.InsurNum:=DataModuleHM.AsaStoredProcListClientsInsurNum.Value;
+  ListInsurForm.FactoryNum:=DataModuleHM.AsaStoredProcListClientsFactoryNum.Value;
+  ListInsurForm.TypeInsurCase:=3;
+  ListInsurForm.ShowModal;
+  RefreshQuery(DataModuleHM.AsaStoredProcListClients);
 end;
 
 end.

@@ -43,6 +43,8 @@ type
     { Public declarations }
     MyFuncLib:TMyFunctionLibrary;
     ReportPath:string;
+    procedure PrintOrder(OrderNum:integer);
+    procedure PrintInOut(InOutNum:integer);
     procedure PrintInsurCase(InsurCaseNum:Integer);
     procedure PrintUserReport;
   end;
@@ -86,6 +88,20 @@ begin
  MyFuncLib.AddFunctionDesc('SUMPROPIS', 'Мои функции','SUMPROPIS(<Число>)/Возвращает сумму прописью.');
  MyFuncLib.AddFunctionDesc('QNTPROPIS', 'Мои функции','QNTPROPIS(<Число>)/Возвращает целое число прописью.');
  frRegisterFunctionLibrary(TMyFunctionLibrary);
+end;
+
+procedure TReportModuleHM.PrintOrder(OrderNum:integer);
+begin
+  frReport.LoadFromFile(ReportPath+DataModuleHM.PrintOrder);
+  frVariables['OrderNum']:=OrderNum;
+  frReport.ShowReport;
+end;
+
+procedure TReportModuleHM.PrintInOut(InOutNum:integer);
+begin
+  frReport.LoadFromFile(ReportPath+DataModuleHM.PrintInOut);
+  frVariables['InOutNum']:=InOutNum;
+  frReport.ShowReport;
 end;
 
 procedure TReportModuleHM.PrintInsurCase(InsurCaseNum:Integer);

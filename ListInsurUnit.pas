@@ -42,7 +42,8 @@ implementation
 
 {$R *.DFM}
 
-uses DataUnit, InsNewMedUnit, InsNewHealthUnit, InsNewHealthMedicUnit;
+uses DataUnit, InsNewMedUnit, InsNewHealthUnit, InsNewHealthMedicUnit,
+  InsNewInsurUnit;
 
 procedure TListInsurForm.FormActivate(Sender: TObject);
 begin
@@ -73,28 +74,41 @@ begin
   if TypeInsurCase=1 then
   with InsNewHealthForm do
   begin
-    InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
-    ClientID:=Self.ClientID;
-    InsurNum:=Self.InsurNum;
-    FactoryNum:=Self.FactoryNum;
+    InsNewHealthForm.InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
+    InsNewHealthForm.ClientID:=Self.ClientID;
+    InsNewHealthForm.InsurNum:=Self.InsurNum;
+    InsNewHealthForm.FactoryNum:=Self.FactoryNum;
+    InsNewHealthForm.TypeInsurCase:=Self.TypeInsurCase;
     ShowModal;
   end;    // with}
   if TypeInsurCase=0 then
   with InsNewMedForm do
   begin
-    InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
-    ClientID:=Self.ClientID;
-    InsurNum:=Self.InsurNum;
-    FactoryNum:=Self.FactoryNum;
+    InsNewMedForm.InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
+    InsNewMedForm.ClientID:=Self.ClientID;
+    InsNewMedForm.InsurNum:=Self.InsurNum;
+    InsNewMedForm.FactoryNum:=Self.FactoryNum;
+    InsNewMedForm.TypeInsurCase:=Self.TypeInsurCase;
     ShowModal;
   end;    // with}
   if TypeInsurCase=2 then
   with InsNewHealthMedicForm do
   begin
-    InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
-    ClientID:=Self.ClientID;
-    InsurNum:=Self.InsurNum;
-    FactoryNum:=Self.FactoryNum;
+    InsNewHealthMedicForm.InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
+    InsNewHealthMedicForm.ClientID:=Self.ClientID;
+    InsNewHealthMedicForm.InsurNum:=Self.InsurNum;
+    InsNewHealthMedicForm.FactoryNum:=Self.FactoryNum;
+    InsNewHealthMedicForm.TypeInsurCase:=Self.TypeInsurCase;
+    ShowModal;
+  end;    // with}
+  if TypeInsurCase=3 then
+  with InsNewInsurForm do
+  begin
+    InsNewInsurForm.InsurCaseNum:=DataModuleHM.AsaStoredProcListInsurCaseInsurCaseNum.Value;
+    InsNewInsurForm.ClientID:=Self.ClientID;
+    InsNewInsurForm.InsurNum:=Self.InsurNum;
+    InsNewInsurForm.FactoryNum:=Self.FactoryNum;
+    InsNewInsurForm.TypeInsurCase:=Self.TypeInsurCase;
     ShowModal;
   end;    // with}
   RefreshQuery(DataModuleHM.AsaStoredProcListInsurCase);
@@ -105,28 +119,41 @@ begin
   if TypeInsurCase=1 then
   with InsNewHealthForm do
   begin
-    InsurCaseNum:=-1;
-    ClientID:=Self.ClientID;
-    InsurNum:=Self.InsurNum;
-    FactoryNum:=Self.FactoryNum;
+    InsNewHealthForm.InsurCaseNum:=-1;
+    InsNewHealthForm.ClientID:=Self.ClientID;
+    InsNewHealthForm.InsurNum:=Self.InsurNum;
+    InsNewHealthForm.FactoryNum:=Self.FactoryNum;
+    InsNewHealthForm.TypeInsurCase:=Self.TypeInsurCase;
     ShowModal;
   end;
   if TypeInsurCase=0 then
   with InsNewMedForm do
   begin
-    InsurCaseNum:=-1;
-    ClientID:=Self.ClientID;
-    InsurNum:=Self.InsurNum;
-    FactoryNum:=Self.FactoryNum;
+    InsNewMedForm.InsurCaseNum:=-1;
+    InsNewMedForm.ClientID:=Self.ClientID;
+    InsNewMedForm.InsurNum:=Self.InsurNum;
+    InsNewMedForm.FactoryNum:=Self.FactoryNum;
+    InsNewMedForm.TypeInsurCase:=Self.TypeInsurCase;
     ShowModal;
   end;
   if TypeInsurCase=2 then
   with InsNewHealthMedicForm do
   begin
-    InsurCaseNum:=-1;
-    ClientID:=Self.ClientID;
-    InsurNum:=Self.InsurNum;
-    FactoryNum:=Self.FactoryNum;
+    InsNewHealthMedicForm.InsurCaseNum:=-1;
+    InsNewHealthMedicForm.ClientID:=Self.ClientID;
+    InsNewHealthMedicForm.InsurNum:=Self.InsurNum;
+    InsNewHealthMedicForm.FactoryNum:=Self.FactoryNum;
+    InsNewHealthMedicForm.TypeInsurCase:=Self.TypeInsurCase;
+    ShowModal;
+  end;
+  if TypeInsurCase=3 then
+  with InsNewInsurForm do
+  begin
+    InsNewInsurForm.InsurCaseNum:=-1;
+    InsNewInsurForm.ClientID:=Self.ClientID;
+    InsNewInsurForm.InsurNum:=Self.InsurNum;
+    InsNewInsurForm.FactoryNum:=Self.FactoryNum;
+    InsNewInsurForm.TypeInsurCase:=Self.TypeInsurCase;
     ShowModal;
   end;
   RefreshQuery(DataModuleHM.AsaStoredProcListInsurCase);
@@ -138,14 +165,31 @@ begin
 end;
 
 procedure TListInsurForm.ButtonDelClick(Sender: TObject);
+var TotalSale:Currency;
 begin
   with DataModuleHM do
   begin
-    AsaStoredProcUnInsurCase.ParamByName('@LocCode').Value:=LocCode;
-    AsaStoredProcUnInsurCase.ParamByName('@Operator').Value:=Operator;
-    AsaStoredProcUnInsurCase.ParamByName('@InsurCaseNum').Value:=AsaStoredProcListInsurCaseInsurCaseNum.Value;
-    AsaStoredProcUnInsurCase.ExecProc;
-    RefreshQuery(DataModuleHM.AsaStoredProcListInsurCase);
+    TotalSale := 0;
+    If (TypeInsurCase=3) then
+     begin
+      AsaStoredProcShowInsurCase.ParamByName('@InsurCaseNum').Value:=AsaStoredProcListInsurCaseInsurCaseNum.Value;
+      AsaStoredProcShowInsurCase.Open;
+      TotalSale:=AsaStoredProcShowInsurCaseTotalSale.Value;
+      AsaStoredProcShowInsurCase.Close;
+     end;
+    if TotalSale<>0 then
+     begin
+       ShowMessage('Сумма выданных медикаментов не равна нулю,'+#13+'сначала сделайте все откаты');
+       Exit;
+     end
+    else
+     begin
+      AsaStoredProcUnInsurCase.ParamByName('@LocCode').Value:=LocCode;
+      AsaStoredProcUnInsurCase.ParamByName('@Operator').Value:=Operator;
+      AsaStoredProcUnInsurCase.ParamByName('@InsurCaseNum').Value:=AsaStoredProcListInsurCaseInsurCaseNum.Value;
+      AsaStoredProcUnInsurCase.ExecProc;
+      RefreshQuery(DataModuleHM.AsaStoredProcListInsurCase);
+     end;
   end;    // with
 end;
 

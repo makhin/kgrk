@@ -24,7 +24,6 @@ type
     AsaStoredProcListFin: TAsaStoredProc;
     DataSourceListFin: TDataSource;
     AsaStoredProcRefrFin: TAsaStoredProc;
-    AsaStoredProcRefrTreat: TAsaStoredProc;
     AsaStoredProcRefrMaxInsur: TAsaStoredProc;
     AsaStoredProcShowFin: TAsaStoredProc;
     AsaSQLUpdate: TAsaSQL;
@@ -122,7 +121,6 @@ type
     AsaStoredProcListBranchBranchName: TStringField;
     AsaStoredProcListTreatmentTreatNum: TIntegerField;
     AsaStoredProcListTreatmentTreatName: TStringField;
-    AsaStoredProcListTreatmentChange: TBooleanField;
     AsaStoredProcListFinFinDate: TDateField;
     AsaStoredProcListFinFinance: TCurrencyField;
     AsaStoredProcListFinPayName: TStringField;
@@ -148,10 +146,6 @@ type
     AsaStoredProcShowInsurCaseMedTariff: TCurrencyField;
     AsaStoredProcShowInsurCaseMedBedDay: TCurrencyField;
     AsaStoredProcShowInsurCaseInsurLimitNum: TIntegerField;
-    AsaStoredProcListInsurLimit: TAsaStoredProc;
-    AsaStoredProcListInsurLimitInsurLimitNum: TIntegerField;
-    AsaStoredProcListInsurLimitInsurLimitName: TStringField;
-    AsaStoredProcListInsurLimitInsurLimitMoney: TCurrencyField;
     AsaStoredProcShowInsurLimit: TAsaStoredProc;
     AsaStoredProcShowInsurLimitInsurLimitNum: TIntegerField;
     AsaStoredProcShowInsurLimitInsurLimitName: TStringField;
@@ -176,14 +170,10 @@ type
     AsaStoredProcListMedicRecipeNum: TStringField;
     AsaStoredProcListMaxInsurMaxInsurNum: TIntegerField;
     AsaStoredProcListMaxInsurMaxInsurName: TStringField;
-    AsaStoredProcListMaxInsurMaxInsurMoney: TCurrencyField;
     AsaStoredProcListMaxInsurComment: TStringField;
     AsaStoredProcListMaxInsurLicname: TStringField;
-    AsaStoredProcListMaxInsurMaxInsurPayment: TCurrencyField;
-    AsaStoredProcShowMaxInsurMaxInsurMoney: TCurrencyField;
     AsaStoredProcShowMaxInsurComment: TStringField;
     AsaStoredProcShowMaxInsurLicNum: TIntegerField;
-    AsaStoredProcShowMaxInsurMaxInsurPayment: TCurrencyField;
     AsaStoredProcListLicenses: TAsaStoredProc;
     AsaStoredProcListLicensesLicNum: TIntegerField;
     AsaStoredProcListLicensesLicName: TStringField;
@@ -199,7 +189,6 @@ type
     AsaStoredProcShowClientClientID: TIntegerField;
     AsaStoredProcShowInsurCaseClientID: TIntegerField;
     AsaStoredProcShowFinClientID: TIntegerField;
-    AsaStoredProcListMaxInsurs: TCurrencyField;
     AsaStoredProcListFinMaxInsur: TAsaStoredProc;
     AsaStoredProcListFinMaxInsurFinTreatNum: TIntegerField;
     AsaStoredProcListFinMaxInsurFinDate: TDateField;
@@ -227,8 +216,6 @@ type
     AsaStoredProcShowInsurCaseTarif_Reanim: TCurrencyField;
     AsaStoredProcShowInsurCaseTotalSum: TCurrencyField;
     AsaStoredProcListInsurCaseMKBDiagName: TStringField;
-    AsaStoredProcShowMaxInsurStacMoney: TCurrencyField;
-    AsaStoredProcShowMaxInsurAmbMoney: TCurrencyField;
     AsaStoredProcGetSumTotalSum: TAsaStoredProc;
     AsaStoredProcListClientsClientID: TIntegerField;
     AsaStoredProcListClientsClientNum: TStringField;
@@ -247,52 +234,134 @@ type
     AsaStoredProcListClientsBeginDate: TDateField;
     AsaStoredProcListClientsTermDate: TDateField;
     AsaStoredProcListInsurCaseHospitalName: TStringField;
-    AsaStoredProcGetLimit: TAsaStoredProc;
-    AsaStoredProcRefrLimit: TAsaStoredProc;
-    AsaStoredProcGetLimitLimit: TCurrencyField;
-    AsaStoredProcGetLimitMedLimit: TCurrencyField;
-    AsaStoredProcGetLimitServLimit: TCurrencyField;
+    AsaStoredProcListTreatmentTreatMoney: TCurrencyField;
+    AsaStoredProcListStockFromName: TAsaStoredProc;
+    AsaStoredProcListStockFromNameProdCode: TStringField;
+    AsaStoredProcListStockFromNameProdName: TStringField;
+    AsaStoredProcListStockFromNameCost: TCurrencyField;
+    AsaStoredProcListStockFromNameCurr_Stock: TFloatField;
+    DataSourceListStockFromName: TDataSource;
+    AsaStoredProcListOrder_s: TAsaStoredProc;
+    AsaStoredProcListOrder_sOrderNum: TIntegerField;
+    AsaStoredProcListOrder_sOrderDate: TDateField;
+    AsaStoredProcListOrder_sInsurCaseNum: TIntegerField;
+    AsaStoredProcListOrder_sOperator: TIntegerField;
+    AsaStoredProcListOrder_sComment: TStringField;
+    AsaStoredProcListOrder_sTotalSale: TCurrencyField;
+    AsaStoredProcListOrder_sPaid: TBooleanField;
+    DataSourceListOrder_s: TDataSource;
+    AsaStoredProcListOrder_d: TAsaStoredProc;
+    AsaStoredProcListOrder_dID: TIntegerField;
+    AsaStoredProcListOrder_dOrderNum: TIntegerField;
+    AsaStoredProcListOrder_dProdCode: TStringField;
+    AsaStoredProcListOrder_dQuantity: TFloatField;
+    AsaStoredProcListOrder_dTotalSale: TCurrencyField;
+    AsaStoredProcListOrder_dCost: TCurrencyField;
+    AsaStoredProcListOrder_dProdName: TStringField;
+    DataSourceListOrder_d: TDataSource;
+    AsaStoredProcListInOut_s: TAsaStoredProc;
+    AsaStoredProcListInOut_sInOutNum: TIntegerField;
+    AsaStoredProcListInOut_sInOutDate: TDateField;
+    AsaStoredProcListInOut_sOperator: TIntegerField;
+    AsaStoredProcListInOut_sComment: TStringField;
+    AsaStoredProcListInOut_sTotalSale: TCurrencyField;
+    DataSourceListInOut_s: TDataSource;
+    AsaStoredProcListinOut_d: TAsaStoredProc;
+    AsaStoredProcListinOut_dID: TIntegerField;
+    AsaStoredProcListinOut_dInOutNum: TIntegerField;
+    AsaStoredProcListinOut_dProdCode: TStringField;
+    AsaStoredProcListinOut_dQuantity: TFloatField;
+    AsaStoredProcListinOut_dTotalSale: TCurrencyField;
+    AsaStoredProcListinOut_dCost: TCurrencyField;
+    AsaStoredProcListinOut_dProdName: TStringField;
+    DataSourceListInOut_d: TDataSource;
+    RxMemoryDataInOut_d: TRxMemoryData;
+    RxMemoryDataInOut_dProdCode: TStringField;
+    RxMemoryDataInOut_dProdName: TStringField;
+    RxMemoryDataInOut_dCost: TCurrencyField;
+    RxMemoryDataInOut_dTotalSale: TCurrencyField;
+    RxMemoryDataInOut_dQuantity: TFloatField;
+    RxMemoryDataOrder_d: TRxMemoryData;
+    RxMemoryDataOrder_dProdCode: TStringField;
+    RxMemoryDataOrder_dProdName: TStringField;
+    RxMemoryDataOrder_dCost: TCurrencyField;
+    RxMemoryDataOrder_dTotalSale: TCurrencyField;
+    RxMemoryDataOrder_dQuantity: TFloatField;
+    DataSourceInOut_d: TDataSource;
+    DataSourceOrder_d: TDataSource;
+    AsaStoredProcListProduct: TAsaStoredProc;
+    AsaStoredProcListProductProdCode: TStringField;
+    AsaStoredProcListProductProdName: TStringField;
+    AsaStoredProcRefrInOut_s: TAsaStoredProc;
+    AsaStoredProcRefrInOut_d: TAsaStoredProc;
+    AsaStoredProcRefrOrder_s: TAsaStoredProc;
+    AsaStoredProcRefrOrder_d: TAsaStoredProc;
+    AsaStoredProcListCostStock: TAsaStoredProc;
+    AsaStoredProcListCostStockCost: TCurrencyField;
+    AsaStoredProcListCostStockCurr_Stock: TFloatField;
+    DataSourceCostStock: TDataSource;
+    AsaStoredProcExistProdCode: TAsaStoredProc;
+    AsaStoredProcUnOrder: TAsaStoredProc;
+    AsaStoredProcRefrProduct: TAsaStoredProc;
+    AsaStoredProcShowProduct: TAsaStoredProc;
+    AsaStoredProcShowProductProdCode: TStringField;
+    AsaStoredProcShowProductProdName: TStringField;
+    AsaStoredProcShowProductBox: TIntegerField;
+    AsaStoredProcShowProductProducer: TStringField;
+    AsaStoredProcShowProductChange: TBooleanField;
+    AsaStoredProcEP: TAsaStoredProc;
+    AsaStoredProcShowOrder: TAsaStoredProc;
+    AsaStoredProcShowOrderOrderNum: TIntegerField;
+    AsaStoredProcShowOrderOrderDate: TDateField;
+    AsaStoredProcShowOrderInsurCaseNum: TIntegerField;
+    AsaStoredProcShowOrderOperator: TIntegerField;
+    AsaStoredProcShowOrderComment: TStringField;
+    AsaStoredProcShowOrderTotalSale: TCurrencyField;
+    AsaStoredProcShowOrder_d: TAsaStoredProc;
+    AsaStoredProcShowOrder_dprodcode: TStringField;
+    AsaStoredProcShowOrder_dprodname: TStringField;
+    AsaStoredProcShowOrder_dcost: TCurrencyField;
+    AsaStoredProcShowOrder_dquantity: TFloatField;
+    AsaStoredProcShowInsurCaseTreatName: TStringField;
+    AsaStoredProcShowInsurCaseTreatMoney: TCurrencyField;
+    AsaStoredProcShowInsurCaseSickList: TStringField;
+    AsaStoredProcShowInsurCasePeriod: TIntegerField;
+    AsaStoredProcShowInsurCaseTotalSale: TCurrencyField;
+    AsaStoredProcShowInsurCaseDebt: TCurrencyField;
+    AsaDatasetMedic: TAsaDataset;
+    StringField1: TStringField;
+    StringField2: TStringField;
+    IntegerField1: TIntegerField;
+    StringField3: TStringField;
+    BooleanField1: TBooleanField;
+    DataSourceMedic: TDataSource;
+    AsaStoredProcGetSumTotalSumLimit: TCurrencyField;
+    AsaStoredProcGetSumTotalSumTreatLimit: TCurrencyField;
     AsaStoredProcGetSumTotalSumTotalSum: TCurrencyField;
-    AsaStoredProcGetSumTotalSumMedSum: TCurrencyField;
-    AsaStoredProcGetSumTotalSumServSum: TCurrencyField;
-    AsaStoredProcRemainders: TAsaStoredProc;
-    AsaStoredProcRemaindersTreatNum: TIntegerField;
-    AsaStoredProcRemaindersTreatName: TStringField;
-    AsaStoredProcRemaindersLimit: TCurrencyField;
-    AsaStoredProcRemaindersMedLimit: TCurrencyField;
-    AsaStoredProcRemaindersServLimit: TCurrencyField;
-    AsaStoredProcRemainderstotal: TCurrencyField;
-    AsaStoredProcRemaindersmed: TCurrencyField;
-    AsaStoredProcRemaindersserv: TCurrencyField;
-    DataSourceRemainders: TDataSource;
-    AsaStoredProcListClientsHealth: TIntegerField;
-    AsaStoredProcListClientsPayHealth: TCurrencyField;
-    AsaStoredProcListClientsMedCountStac: TIntegerField;
-    AsaStoredProcListClientsMedCountAmb: TIntegerField;
-    AsaStoredProcListClientsMedCountEmerg: TIntegerField;
-    AsaStoredProcListClientsMedMedStac: TCurrencyField;
-    AsaStoredProcListClientsMedMedStacDS0: TCurrencyField;
-    AsaStoredProcListClientsMedMedStacDS1: TCurrencyField;
-    AsaStoredProcListClientsMedMedAmb: TCurrencyField;
-    AsaStoredProcListClientsMedMedEmerg: TCurrencyField;
-    AsaStoredProcListClientsPayMedStac: TCurrencyField;
-    AsaStoredProcListClientsPayMedAmb: TCurrencyField;
-    AsaStoredProcListClientsPayMedEmerg: TCurrencyField;
-    AsaStoredProcListDS: TAsaStoredProc;
-    AsaStoredProcListDSDSName: TStringField;
-    AsaStoredProcRefrDS: TAsaStoredProc;
-    AsaStoredProcListClientsComment: TStringField;
+    AsaStoredProcGetSumTotalSumProgName: TStringField;
+    AsaStoredProcExistProdCodeCurr_Stock: TFloatField;
+    AsaStoredProcListClientsMSCHCount: TIntegerField;
+    AsaStoredProcListClientsMSCHSum: TCurrencyField;
+    AsaStoredProcListClientsMedCount: TIntegerField;
+    AsaStoredProcListClientsMedMedSum: TCurrencyField;
+    AsaStoredProcListClientsMedLPUSum: TCurrencyField;
+    AsaStoredProcListClientsHealthCount: TIntegerField;
+    AsaStoredProcListClientsHealthSum: TCurrencyField;
+    AsaStoredProcListClientsLimit: TCurrencyField;
     procedure DataModuleDMKCreate(Sender: TObject);
     procedure DataSourceListInsurCaseDataChange(Sender: TObject;
       Field: TField);
-    procedure AsaStoredProcListClientsAfterScroll(DataSet: TDataSet);
+    procedure RxMemoryDataOrder_dCalcFields(DataSet: TDataSet);
+    procedure RxMemoryDataInOut_dCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
     { Public declarations }
     LocCode:integer;
     Operator:integer;
-    PrintInsurCase:string
+    PrintOrder, PrintInOut, PrintInsurCase:string;
+    NativeHospitalNum:Integer;
+    ReducePercent, ReducePercentLPU:Integer;
   end;
 
 var
@@ -317,7 +386,12 @@ begin
     end;    // with
     LocCode:=ReadInteger('System', 'LocCode',1);
     Operator:=ReadInteger('System', 'Operator',1);
+    PrintOrder:=ReadString('Print','Order','Order.frf');
+    PrintInOut:=ReadString('Print','InOut','InOut.frf');
     PrintInsurCase:=ReadString('Print','InsurCase','InsurCase.frf');
+    NativeHospitalNum:=ReadInteger('System', 'NativeHospitalNum',1);
+    ReducePercent:=ReadInteger('System', 'ReducePercent',15);
+    ReducePercentLPU:=ReadInteger('System', 'ReducePercentLPU',7);
   end;    // with
 end;
 
@@ -338,16 +412,14 @@ begin
 }
 end;
 
-procedure TDataModuleHM.AsaStoredProcListClientsAfterScroll(
-  DataSet: TDataSet);
+procedure TDataModuleHM.RxMemoryDataOrder_dCalcFields(DataSet: TDataSet);
 begin
-  with DataModuleHM.AsaStoredProcRemainders do
-  begin
-    Close;
-    ParamByName('@ClientID').Value:= AsaStoredProcListClientsClientID.Value;
-    ParamByName('@InsurNum').Value:=AsaStoredProcListClientsInsurNum.Value;
-    Open;
-  end;    // with
+        RxMemoryDataOrder_dTotalSale.Value:=RxMemoryDataOrder_dCost.Value*RxMemoryDataOrder_dQuantity.Value
+end;
+
+procedure TDataModuleHM.RxMemoryDataInOut_dCalcFields(DataSet: TDataSet);
+begin
+        RxMemoryDataInOut_dTotalSale.Value:=RxMemoryDataInOut_dCost.Value*RxMemoryDataInOut_dQuantity.Value
 end;
 
 end.
