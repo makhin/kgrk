@@ -1,0 +1,1 @@
+dbunload -c "dbf=kgrk.db;uid=DBA;pwd=inxs1974" -n c:\
