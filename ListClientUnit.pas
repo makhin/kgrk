@@ -55,10 +55,6 @@ type
     DBGridEhClientHealthCount: TdxDBGridMaskColumn;
     DBGridEhClientPayHealth: TdxDBGridCurrencyColumn;
     DBGridEhClientColumnComment: TdxDBGridColumn;
-    Label3: TLabel;
-    Label4: TLabel;
-    DBText5: TDBText;
-    DBText6: TDBText;
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure ButtonFindClick(Sender: TObject);
@@ -188,8 +184,8 @@ procedure TListClientForm.DBGridEhClientCustomDraw(Sender: TObject;
   var AColor: TColor; ASelected, AFocused: Boolean; var ADone: Boolean);
 begin
 //if AColumn.Index > 3 then
-//        If (Trim(ANode.Values[DBGridEhClientColumnComment.Index]) <> '') and (ANode.Values[2] <> ANode.Values[1]) then
-//                AFont.Color := clRed;
+        If (Trim(ANode.Values[DBGridEhClientColumnComment.Index]) <> '') and (ANode.Values[2] <> ANode.Values[1]) then
+                AFont.Color := clRed;
 end;
 
 end.

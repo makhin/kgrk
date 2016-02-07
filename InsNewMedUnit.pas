@@ -203,7 +203,8 @@ begin
 
    CurrencyEditDiag.Value:=DataModuleHM.AsaStoredProcShowInsurCaseDiagSum.Value;
 //   CurrencyEditTotal.Value:=DataModuleHM.AsaStoredProcShowInsurCaseTotalSum.Value;
-   CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
+//   CurrencyEditRest.Value:=Limit-CurrencyEditTotal.Value;
+
    Close;
   end;    // with
 
