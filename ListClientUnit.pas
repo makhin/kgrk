@@ -33,7 +33,11 @@ type
     DBGridEhClientBeginDate: TdxDBGridDateColumn;
     DBGridEhClientTermDate: TdxDBGridDateColumn;
     ButtonHealthM: TButton;
+    dxDBGriRemainders: TdxDBGrid;
     ButtonMSCH: TButton;
+    dxDBGriRemaindersColumn1: TdxDBGridColumn;
+    dxDBGriRemaindersColumn2: TdxDBGridCurrencyColumn;
+    dxDBGriRemaindersColumn3: TdxDBGridCurrencyColumn;
     DBGridEhClientColumnMSCHQnt: TdxDBGridColumn;
     DBGridEhClientColumnMSCHSum: TdxDBGridCurrencyColumn;
     DBGridEhClientColumnMedQnt: TdxDBGridColumn;
@@ -41,7 +45,6 @@ type
     DBGridEhClientColumnMedLPUSum: TdxDBGridCurrencyColumn;
     DBGridEhClientColumnHealthQnt: TdxDBGridColumn;
     DBGridEhClientColumnHealthSum: TdxDBGridCurrencyColumn;
-    DBGridEhClientColumnLimit: TdxDBGridCurrencyColumn;
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure ButtonFindClick(Sender: TObject);

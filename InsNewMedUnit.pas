@@ -169,6 +169,8 @@ begin
       ButtonAdd.Enabled:=False;
       ButtonDel.Enabled:=False;
       DateEditBegin.Date:=Now();
+      GlobalLimit := 0;
+      LocalLimit := 0;
     end
    else
     begin
@@ -181,9 +183,9 @@ begin
       BitBtnPrint.Enabled:=True;
       ButtonAdd.Enabled:=True;
       ButtonDel.Enabled:=True;
+      GetLimit;
     end;
 
-   GetLimit;
    BedDay:=DataModuleHM.AsaStoredProcShowInsurCaseMedBedDay.Value;
 
    if BedDay=0 then

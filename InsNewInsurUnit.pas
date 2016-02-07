@@ -139,6 +139,8 @@ begin
       ButtonPrintOrder.Enabled:=False;
       BitBtnPrint.Enabled:=False;
       DateEditBegin.Date:=Now();
+      GlobalLimit := 0;
+      LocalLimit := 0;
     end
    else
     begin
@@ -150,10 +152,10 @@ begin
       ButtonUnOrder.Enabled:=True;
       ButtonPrintOrder.Enabled:=True;
       BitBtnPrint.Enabled:=True;
+      GetLimit;
     end;
    Close;
  end;    // with
-  GetLimit;
   ReCalc(Sender);
   DataModuleHM.AsaStoredProcListOrder_s.Close;
   DataModuleHM.AsaStoredProcListOrder_s.ParamByName('@InsurCaseNum').Value:=InsurCaseNum;

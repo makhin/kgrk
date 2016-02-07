@@ -234,6 +234,12 @@ type
     AsaStoredProcListClientsBeginDate: TDateField;
     AsaStoredProcListClientsTermDate: TDateField;
     AsaStoredProcListInsurCaseHospitalName: TStringField;
+    AsaStoredProcGetLimit: TAsaStoredProc;
+    AsaStoredProcGetLimitLimit: TCurrencyField;
+    AsaStoredProcGetLimitMedLimit: TCurrencyField;
+    AsaStoredProcGetLimitServLimit: TCurrencyField;
+    AsaStoredProcRemainders: TAsaStoredProc;
+    DataSourceRemainders: TDataSource;
     AsaStoredProcListTreatmentTreatMoney: TCurrencyField;
     AsaStoredProcListStockFromName: TAsaStoredProc;
     AsaStoredProcListStockFromNameProdCode: TStringField;
@@ -335,6 +341,9 @@ type
     StringField3: TStringField;
     BooleanField1: TBooleanField;
     DataSourceMedic: TDataSource;
+    AsaStoredProcRemaindersProgramName: TStringField;
+    AsaStoredProcRemaindersProgramLimit: TCurrencyField;
+    AsaStoredProcRemaindersRest: TCurrencyField;
     AsaStoredProcGetSumTotalSumLimit: TCurrencyField;
     AsaStoredProcGetSumTotalSumTreatLimit: TCurrencyField;
     AsaStoredProcGetSumTotalSumTotalSum: TCurrencyField;
@@ -347,10 +356,10 @@ type
     AsaStoredProcListClientsMedLPUSum: TCurrencyField;
     AsaStoredProcListClientsHealthCount: TIntegerField;
     AsaStoredProcListClientsHealthSum: TCurrencyField;
-    AsaStoredProcListClientsLimit: TCurrencyField;
     procedure DataModuleDMKCreate(Sender: TObject);
     procedure DataSourceListInsurCaseDataChange(Sender: TObject;
       Field: TField);
+    procedure AsaStoredProcListClientsAfterScroll(DataSet: TDataSet);
     procedure RxMemoryDataOrder_dCalcFields(DataSet: TDataSet);
     procedure RxMemoryDataInOut_dCalcFields(DataSet: TDataSet);
   private
@@ -410,6 +419,18 @@ begin
             ListInsurForm.ButtonDel.Enabled := True;
         end
 }
+end;
+
+procedure TDataModuleHM.AsaStoredProcListClientsAfterScroll(
+  DataSet: TDataSet);
+begin
+  with DataModuleHM.AsaStoredProcRemainders do
+  begin
+    Close;
+    ParamByName('@ClientID').Value:= AsaStoredProcListClientsClientID.Value;
+    ParamByName('@InsurNum').Value:=AsaStoredProcListClientsInsurNum.Value;
+    Open;
+  end;    // with
 end;
 
 procedure TDataModuleHM.RxMemoryDataOrder_dCalcFields(DataSet: TDataSet);
