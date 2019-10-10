@@ -69,6 +69,7 @@ type
     Label19: TLabel;
     Label20: TLabel;
     Label21: TLabel;
+    CheckBoxCLimit: TCheckBox;
     procedure FormActivate(Sender: TObject);
     procedure BitBtnCancelClick(Sender: TObject);
     procedure BitBtnSaveClick(Sender: TObject);
@@ -142,6 +143,7 @@ begin
    Open;
    CurrencyEditMedical.Value:=DataModuleHM.AsaStoredProcShowInsurCaseMedSum.Value;
    CheckBoxAddAkt.Checked:=DataModuleHM.AsaStoredProcShowInsurCaseAddAkt.Value;
+   CheckBoxCLimit.Checked:=DataModuleHM.AsaStoredProcShowInsurCaseCorporateLimit.Value;
    CurrencyEditFood.Value:=DataModuleHM.AsaStoredProcShowInsurCaseAddMedSum.Value;
    DateEditProtocol.Date:=DataModuleHM.AsaStoredProcShowInsurCaseReportDate.Value;
    CheckBoxIndust.Checked:=DataModuleHM.AsaStoredProcShowInsurCaseIsIndust.Value;
@@ -271,6 +273,7 @@ begin
 
      ParamByName('@Comment').AsString:=MemoComment.Text;
      ParamByName('@IsIndust').AsBoolean:=CheckBoxIndust.Checked;
+     ParamByName('@CorporateLimit').AsBoolean:=CheckBoxCLimit.Checked;
 
      ParamByName('@MedSum').AsCurrency:=CurrencyEditMedical.Value; // Сумма по медикаментам
      ParamByName('@DiagSum').AsCurrency:=CurrencyEditDiag.Value; // Сумма за обследование
