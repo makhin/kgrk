@@ -283,6 +283,7 @@ type
     AsaStoredProcRefrDS: TAsaStoredProc;
     AsaStoredProcListClientsComment: TStringField;
     AsaStoredProcShowInsurCaseCorporateLimit: TBooleanField;
+    AsaStoredProcShowClientCardNum: TStringField;
     procedure DataModuleDMKCreate(Sender: TObject);
     procedure DataSourceListInsurCaseDataChange(Sender: TObject;
       Field: TField);

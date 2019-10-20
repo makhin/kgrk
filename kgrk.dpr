@@ -1,7 +1,11 @@
 program kgrk;
 
+{%File 'kgrk.ini'}
+
 uses
-  Forms,  Dialogs, SysUtils,
+  Forms,
+  Dialogs,
+  SysUtils,
   LibUnit in 'LibUnit.pas',
   MainFormUnit in 'MainFormUnit.pas' {MainForm},
   DataUnit in 'DataUnit.pas' {DataModuleHM: TDataModule},
@@ -39,7 +43,6 @@ begin
   Application.Title := 'КЖРК';
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TDataModuleHM, DataModuleHM);
-
   try
    DataModuleHM.AsaSessionHM.LoginPassword:=InputPassword('Здоровье и медицина', 'Введите пароль');
    DataModuleHM.AsaSessionHM.Connected:=True;
