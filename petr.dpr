@@ -1,5 +1,7 @@
 program petr;
 
+{%File 'petr.ini'}
+
 uses
   Forms,
   Dialogs,

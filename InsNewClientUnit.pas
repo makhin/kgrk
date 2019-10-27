@@ -42,6 +42,8 @@ type
     ButtonInsurEd: TButton;
     MaskEditFact: TEdit;
     MaskEditTabN: TEdit;
+    Label15: TLabel;
+    EditCardNum: TEdit;
     procedure BitBtnCancelClick(Sender: TObject);
     procedure BitBtnSaveClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -130,6 +132,7 @@ begin
      ParamByName('@IndexField').AsString:=MaskEditIndex.Text;
      ParamByName('@Addr').AsString:=EditAddr.Text;
      ParamByName('@AccountNum').AsString:=EditAccount.Text;
+     ParamByName('@CardNum').AsString:=EditCardNum.Text;
      ParamByName('@InsurNum').AsInteger:=Integer(ComboBoxMaxInsur.Items.Objects[ComboBoxMaxInsur.ItemIndex]);
      ParamByName('@FactoryNum').AsInteger:=Integer(ComboBoxFactory.Items.Objects[ComboBoxFactory.ItemIndex]);
      if DateEditBegin.Date<>0 then
@@ -169,6 +172,7 @@ begin
    EditAddr.Text:=FieldByName('Addr').AsString;
    MaskEditIndex.Text:=FieldByName('IndexField').AsString;
    EditAccount.Text:=FieldByName('AccountNum').AsString;
+   EditCardNum.Text:=FieldByName('CardNum').AsString;
    DateEditBegin.Date:=FieldByName('BeginDate').AsDateTime;
    DateEditTerm.Date:=FieldByName('TermDate').AsDateTime;
    EditComment.Text:=FieldByName('Comment').AsString;

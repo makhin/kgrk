@@ -356,6 +356,7 @@ type
     AsaStoredProcListClientsMedLPUSum: TCurrencyField;
     AsaStoredProcListClientsHealthCount: TIntegerField;
     AsaStoredProcListClientsHealthSum: TCurrencyField;
+    AsaStoredProcShowClientCardNum: TStringField;
     procedure DataModuleDMKCreate(Sender: TObject);
     procedure DataSourceListInsurCaseDataChange(Sender: TObject;
       Field: TField);
